@@ -6,6 +6,6 @@ RUN go env -w GOPROXY=https://goproxy.cn,direct && \
     go mod tidy && \
     go build -o server
 
-EXPOSE 8080
+EXPOSE 80
 
 ENTRYPOINT ["/app/server"]
