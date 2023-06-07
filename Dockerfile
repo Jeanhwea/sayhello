@@ -1,10 +1,13 @@
-FROM golang:1.20
+FROM golang:1.20 as builder
 
 WORKDIR /app
 ADD . /app
 RUN go env -w GOPROXY=https://goproxy.cn,direct && \
-    go mod tidy && \
     go build -o server
+
+FROM golang:1.20 as runner
+WORKDIR /app
+COPY --from=builder /app/server .
 
 EXPOSE 80
 
