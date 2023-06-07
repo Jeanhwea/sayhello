@@ -1,7 +1,9 @@
 FROM golang:1.20
 
-CMD go mod tidy && go build -o server
+WORKDIR /app
+ADD . /app
+RUN go mod tidy && go build -o server
 
 EXPOSE 8080
 
-ENTRYPOINT ["./server"]
+ENTRYPOINT ["/app/server"]
