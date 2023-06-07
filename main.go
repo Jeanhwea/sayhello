@@ -1,13 +1,50 @@
-package sayhello
+package main
 
-import "github.com/gin-gonic/gin"
+import (
+	"net"
+	"os"
+
+	"github.com/gin-gonic/gin"
+)
+
+func GetHostname() (host string) {
+	host, err := os.Hostname()
+	if err != nil {
+		return
+	}
+	return
+}
+
+func GetIP() (ip string) {
+	addrs, err := net.InterfaceAddrs()
+	if err != nil {
+		return
+	}
+
+	for _, addr := range addrs {
+		if ipNet, ok := addr.(*net.IPNet); ok {
+			if ipNet.IP.IsLoopback() {
+				continue
+			}
+			if ipNet.IP.To4() == nil {
+				continue
+			}
+			ip = ipNet.IP.String()
+			return
+		}
+	}
+	return
+}
 
 func main() {
 	r := gin.Default()
-	r.GET("/ping", func(c *gin.Context) {
+
+	r.GET("", func(c *gin.Context) {
 		c.JSON(200, gin.H{
-			"message": "pong",
+			"hostname": GetHostname(),
+			"ip":       GetIP(),
 		})
 	})
+
 	r.Run() // listen and serve on 0.0.0.0:8080
 }
