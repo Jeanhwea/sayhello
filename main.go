@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func GetHostname() (host string) {
+func GetHost() (host string) {
 	host, err := os.Hostname()
 	if err != nil {
 		return
@@ -41,8 +41,8 @@ func main() {
 
 	r.GET("", func(c *gin.Context) {
 		c.JSON(200, gin.H{
-			"hostname": GetHostname(),
-			"ip":       GetIP(),
+			"host": GetHost(),
+			"ip":   GetIP(),
 		})
 	})
 
