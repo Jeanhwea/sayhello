@@ -1,11 +1,11 @@
-FROM golang:1.20 as builder
+FROM golang:1.20-alpine as builder
 
 WORKDIR /app
 ADD . /app
 RUN go env -w GOPROXY=https://goproxy.cn,direct && \
     go build -o server
 
-FROM golang:1.20 as runner
+FROM golang:1.20-alpine as runner
 WORKDIR /app
 COPY --from=builder /app/server .
 
